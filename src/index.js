@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM fully loaded and parsed')
 
     // Define the URL for fetching random dog images
-    const imgUrl = "https://dog.ceo/api/breeds/image/random/4"
+    const imgUrl = "https://dog.ceo/api/breeds/list/all"
 
     //fetch the data from the API
     fetch(imgUrl)
@@ -86,7 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
            //append the list to the breed list
            breedList.appendChild(li)
-           //sconsole.log('Appended List Item:', li)
+
+           //add an event listiner to change the font color on click
+           li.addEventListener('click', () => {
+            li.style.color = 'firebrick' 
+           })
+
         }
 
     })
