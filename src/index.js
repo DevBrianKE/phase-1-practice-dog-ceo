@@ -47,27 +47,22 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('There was a problem with fetch operation', error)
     })
 
-})
-
- // Wait for the DOM to be fully loaded before running the script
- document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM fully loaded and parsed')
 
     // Define the URL for fetching random dog images
-    const imgUrl = "https://dog.ceo/api/breeds/list/all"
+    const breedURL = "https://dog.ceo/api/breeds/list/all"
 
     //fetch the data from the API
-    fetch(imgUrl)
+    fetch(breedURL)
     .then(response => {
         //check if repsonse is okay
         if(!response.ok) {
-            throw new Error('Network was not OK')
+            throw new Error('Network response was not OK')
         }
         //parse JSON
         return response.json()
     })
     .then(data => {
-        //extract the arrays of the image URLs from the data
+         // Extract the object of breeds from the data
         const breeds = data.message
         //console.log('Fetched Breeds:', breeds)
 
@@ -75,6 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const breedList = document.getElementById('dog-breeds')
         //console.log('Breed List Element:', breedList)
 
+        // Array to store breed list items
+        const breedItems = []
         //iterate over each breed
         for (let breed in breeds) {
             //create a new list item element
@@ -82,10 +79,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             //set the text content to the breed name
             li.textContent = breed
-            console.log('Created List Item:', li)
+            //console.log('Created List Item:', li)
 
            //append the list to the breed list
            breedList.appendChild(li)
+
+           //add breed items array for filtering
+           breedItems.push({breed, li})
 
            //add an event listiner to change the font color on click
            li.addEventListener('click', () => {
@@ -93,6 +93,24 @@ document.addEventListener('DOMContentLoaded', () => {
            })
 
         }
+
+        //add event listiner to the dropdown menu
+        const breedDropDown = document.getElementById('breed-dropdown')
+        breedDropDown.addEventListener('change', (event) => {
+            //get the selected letter from the dropdown
+            const selectedLetter = event.target.value
+            console.log('Selected Letter:', selectedLetter)
+
+            //filter the breeds based on the selected letter
+            breedItems.forEach(item => {
+                const { breed, li } = item;
+                if (breed.startsWith(selectedLetter)) {
+                    li.style.display = ''; // Show breed
+                } else {
+                    li.style.display = 'none'; // Hide breed
+                }
+            })
+        })
 
     })
     .catch(error =>{
