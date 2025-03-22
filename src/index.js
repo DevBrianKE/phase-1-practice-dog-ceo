@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Define the URL for fetching random dog images
     const imgUrl = "https://dog.ceo/api/breeds/image/random/4";
 
+    
     // Fetch the data from the API
     fetch(imgUrl)
     .then(response => {
